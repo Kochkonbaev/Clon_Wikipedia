@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Registration{% endblock %}
+{% block content %}
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <h1>Registration</h1>
+    <p>Please, use the following form to register:</p>
+    <form action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p>
+            <input class="btn btn-primary" type="submit" value="Sing up">
+            <a class="btn btn-primary" href="{% url 'dashboard' %}" role="button">Log in</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{news_detail.title}}
+{% endblock %}
+
+{% block content %}
+
+    <font size=6>{{news_detail.title}}</font>
+    <br>
+    <h3>{{news_detail.text}}</h3>>
+    <br>
+    <h3>{{tags.tag}}</h3>>
+    <img src={{news_detail.img}} height="100" width="150">
+    <br>
+    <br>
+{% if request.user.is_authenticated%} 
+    <a class="btn btn-default" href="{% url 'news_delete' pk=news_detail.pk %}"><span class="glyphicon glyphicon-remove"></span> Удалить</a>
+    <a class="btn btn-default" href="{% url 'news_edit' pk=news_detail.pk %}"><span class="glyphicon glyphicon-pencil"></span> Редактировать</a>
+    <hr>
+     
+    {% with comments.count as total_comments %}
+        <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>Здесь комментарий еще нет.</p>
+    {% endfor %}
+
+    {% if new_comment %}
+        <h2>Ваш коментарий был добавлен.</h2>
+    {% else %}
+        <h2>Добавить новый комментарий.</h2>
+        <form action="." method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <p><input type="submit" value="Добавить"></p>
+        </form>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

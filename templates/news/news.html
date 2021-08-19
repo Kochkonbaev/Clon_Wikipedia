@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+Новости
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+  <h1>Самые новостные новости</h1>
+  <p>Добро пожаловать на мой сайт!</p> 
+</div>
+
+{% for one_tag in tag %}
+<a href={% url 'news_by_tag' pk=one_tag.pk %}><span class="badge bg-secondary">#{{one_tag.name}}</span></a>
+{% endfor %}
+
+    <div class="card" style="width: 18rem;">
+        {% for one_news in all_news %}
+        <img src={{one_news.img}} class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{one_news.title}}</h5>
+          <p class="card-text">{{one_news.text}}</p>
+          <a href={% url 'news_detail' pk=one_news.pk %} class="btn btn-primary">Читать полностью</a>
+        </div>
+
+        {% endfor %}
+
+    {% include "pagination.html" with page=all_news %}
+    </div>
+
+{% endblock %}
